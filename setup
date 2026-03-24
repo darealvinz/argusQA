@@ -1,0 +1,19 @@
+#!/bin/bash
+# Argus Setup Script
+# Run this after cloning: cd ~/.claude/skills/argus && ./setup
+
+echo "Argus — AI-powered QA testing skill pack"
+echo "========================================="
+echo ""
+echo "Skills installed to: $(pwd)/skills/"
+echo ""
+echo "Available skills:"
+for skill_dir in skills/*/; do
+  skill_name=$(basename "$skill_dir")
+  echo "  - $skill_name"
+done
+echo ""
+echo "To get started, open your project and tell the agent:"
+echo "  'Set up Argus for this project'"
+echo ""
+echo "Setup complete."

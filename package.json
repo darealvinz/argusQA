@@ -1,0 +1,11 @@
+{
+  "name": "argus-skills",
+  "version": "0.1.0",
+  "description": "Argus — AI-powered QA testing skill pack for coding agents",
+  "license": "MIT",
+  "keywords": ["claude-code", "cursor", "skills", "testing", "qa", "automation", "playwright", "cypress"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ToolsByMe/argus"
+  }
+}
