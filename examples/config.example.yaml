@@ -1,0 +1,77 @@
+# .argus/config.yaml — Example configuration
+# Copy this to your project root as .argus/config.yaml and customize.
+
+project:
+  name: "My E-Commerce App"
+  id: "my-ecommerce"
+
+auth:
+  method: form
+  loginUrl: "/login"
+  credentials:
+    username: ${APP_TEST_USERNAME}
+    password: ${APP_TEST_PASSWORD}
+
+environments:
+  dev:
+    url: "https://dev.myapp.com"
+  staging:
+    url: "https://staging.myapp.com"
+  prod:
+    url: "https://myapp.com"
+
+browsers:
+  - name: chrome
+    versions: ["latest", "latest-1"]
+    priority: P0
+  - name: firefox
+    versions: ["latest"]
+    priority: P1
+  - name: safari
+    versions: ["latest"]
+    priority: P1
+
+devices:
+  - name: Desktop
+    viewport: { width: 1920, height: 1080 }
+    priority: P0
+  - name: iPhone 14
+    viewport: { width: 390, height: 844 }
+    priority: P0
+  - name: iPad Air
+    viewport: { width: 820, height: 1180 }
+    priority: P1
+
+viewportBreakpoints:
+  mobile: { min: 320, max: 480 }
+  tablet: { min: 481, max: 1024 }
+  desktop: { min: 1025, max: 1920 }
+  largeDesktop: { min: 1921, max: 2560 }
+
+integrations:
+  jira:
+    enabled: true
+    baseUrl: "https://myteam.atlassian.net"
+    projectKey: "MYAPP"
+
+stack:
+  language: typescript
+  web: playwright
+  mobile: webdriverio
+  api: native
+  testRunner: vitest
+
+conventions:
+  testCaseFormat: "TestcaseID - Test Step - Test Data - Expected Result"
+  pageObjectPattern: "POM"
+  namingConvention: "kebab-case"
+
+reporting:
+  defaultFormat: markdown
+  formats: [markdown, html]
+  qualityGates:
+    passingRate: 95
+    maxCriticalBugs: 0
+    maxMajorBugs: 3
+    uiMatchThreshold: 95
+    accessibilityLevel: "AA"
