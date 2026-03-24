@@ -1,0 +1,12 @@
+name: Happy Purchase Flow
+type: happy
+description: End-to-end purchase flow from login through payment confirmation
+steps:
+  - feature: login
+    scenario: login-success
+  - feature: add-to-cart
+    scenario: add-single-item
+  - feature: checkout
+    scenario: checkout-standard
+  - feature: payment
+    scenario: payment-success
