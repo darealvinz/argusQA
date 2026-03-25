@@ -12,6 +12,7 @@ Read a specification or ticket and produce a structured feature file. The featur
 - User provides a spec document, Jira ticket, or requirements text
 - User says "analyze this spec" or "create a feature file for..."
 - A new ticket needs to be translated into testable artifacts
+- User wants test cases but no spec exists (triggers the No-Spec Flow below)
 
 ## Input Sources
 
@@ -19,6 +20,26 @@ Accept input in any of these forms:
 1. **Pasted text** — user pastes spec/requirements directly in chat
 2. **Jira ticket** — user provides ticket ID (delegate to `jira-connector` skill to fetch)
 3. **File reference** — user points to a document in the repo
+4. **Discovery report** — from `exploratory-tester`, after user confirms (see No-Spec Flow)
+
+## No-Spec Flow
+
+**If the user asks to generate test cases or analyze a feature but provides no spec:**
+
+1. **Ask first:** "Do you have a spec, ticket, or requirements document for this feature? I need a spec as the source of truth for generating test cases."
+2. **If user says no:**
+   - Explain: "Without a spec, I can explore the live app to discover what it does, but that discovery is NOT the spec — it's input to help you write one."
+   - Suggest: "Want me to explore the app first? I'll generate a discovery report showing what I find, then you can review and confirm before I create the feature file."
+3. **If user agrees to exploration:**
+   - Invoke `exploratory-tester` → generates discovery report
+   - Present discovery report to user: "Here's what I found. Does this match your understanding of how this feature should work?"
+   - **Wait for user confirmation**
+4. **After user confirms discovery:**
+   - Generate feature file FROM the discovery report + any corrections/additions the user provides
+   - Present feature file for review (Step 5 below)
+   - **The user's confirmed feature file becomes the spec — not the app's behavior**
+
+> **Important:** Discovery tells you what the app DOES. The spec tells you what the app SHOULD DO. These may differ — and that difference is where bugs live. Never treat discovery as the spec without user confirmation.
 
 ## Process
 

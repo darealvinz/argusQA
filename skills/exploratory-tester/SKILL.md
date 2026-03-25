@@ -124,20 +124,30 @@ Reference schema: `schemas/discovery.schema.md`
 
 ## After Exploration
 
-Present the report to the user for review. Suggest next steps:
+Save the discovery report, then present it to the user for review:
 
 ```
 Exploration complete. Discovered 4 pages, 15 elements, 4 API calls.
 
+Here's what I found — please review the discovery report below.
+This shows what the app currently DOES, not necessarily what it SHOULD do.
+```
+
+After presenting the report, suggest next steps:
+
+```
 Want me to:
-  A) Analyze a spec for this feature → invokes spec-analyzer
+  A) Create a feature file from this discovery → invokes spec-analyzer (you'll review before it becomes the spec)
   B) Generate a test plan based on findings → invokes test-planner
   C) Explore another area of the app
   D) Done — I'll review the report
 ```
 
+> **Important:** The discovery report is NOT the spec. It's a factual record of what the agent observed. The user must review and confirm before it can be used to generate a feature file. The feature file (once user-approved) becomes the spec.
+
 ## Human-in-the-Loop
 
 - **Before exploration:** Confirm scope and entry point with user
 - **During exploration:** If an ambiguous interaction is encountered (e.g., a modal with unclear purpose), flag it rather than guessing
-- **After exploration:** Present the full report for review before proceeding to downstream skills
+- **After exploration:** Present the full report for review. Clearly state: "This is what the app does. Does this match what it should do?"
+- **Never skip to test case generation** — discovery → user confirms → feature file → user confirms → test cases

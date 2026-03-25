@@ -17,7 +17,10 @@ Generate comprehensive test cases from a feature file. Test cases cover up to 5 
 
 1. Read the feature file from `.argus/features/<id>.feature.md`
 2. Read the test plan from `.argus/test-plan.md` (if exists) for browser/device context
-3. If no feature file exists, suggest running `spec-analyzer` first
+3. **If no feature file exists — STOP.** Do not generate test cases without a feature file. Instead:
+   - Tell the user: "No feature file found for this feature. I need an approved feature file before generating test cases."
+   - Suggest: "Do you have a spec or ticket? I can analyze it with `spec-analyzer` to create the feature file first."
+   - If no spec exists either, guide the user through the No-Spec Flow in `spec-analyzer` (explore → discover → user confirms → feature file → then test cases)
 
 ### Step 2: Propose Testing Layers
 
