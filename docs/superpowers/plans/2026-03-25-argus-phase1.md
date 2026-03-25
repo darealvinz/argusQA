@@ -75,7 +75,7 @@ argus/   (project root)
   "keywords": ["claude-code", "cursor", "skills", "testing", "qa", "automation", "playwright", "cypress"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ToolsByMe/argus"
+    "url": "https://github.com/argus-testing/argus"
   }
 }
 ```

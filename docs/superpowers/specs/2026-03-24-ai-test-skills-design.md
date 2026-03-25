@@ -25,18 +25,18 @@ An AI agent with QA-specific skills can handle the generation while the tester f
 
 **Claude Code (recommended):**
 ```bash
-npx skills add ToolsByMe/argus
+npx skills add argus
 ```
 
 **Or clone manually:**
 ```bash
-git clone https://github.com/ToolsByMe/argus.git ~/.claude/skills/argus
+git clone https://github.com/argus-testing/argus.git ~/.claude/skills/argus
 cd ~/.claude/skills/argus && ./setup
 ```
 
 **Cursor / Windsurf:**
 ```bash
-npx skills add ToolsByMe/argus
+npx skills add argus
 ```
 
 **OpenClaw / ClawHub:**

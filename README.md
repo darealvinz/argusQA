@@ -8,12 +8,12 @@ Argus is a skill pack for coding agents (Claude Code, Cursor, etc.) that gives y
 
 **Via npx (recommended):**
 ```bash
-npx skills add ToolsByMe/argus
+npx skills add argus
 ```
 
 **Via git clone:**
 ```bash
-git clone https://github.com/ToolsByMe/argus.git
+git clone https://github.com/argus-testing/argus.git
 cd argus
 ./setup
 ```
