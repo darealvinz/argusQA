@@ -75,8 +75,6 @@ Reference the example config at `config/config.example.yaml` for valid values.
 | `jira-connector` | You need to pull a ticket from Jira |
 | `exploratory-tester` | You need to explore an existing app to understand its flows |
 
-> **Note:** Skills not yet available: `ui-verifier`, `accessibility-checker`, `test-maintainer`, `exploratory-tester`. These are planned for Phase 3.
-
 ## Typical Workflows
 
 **New project:**
