@@ -16,6 +16,10 @@ on-session-start:
         Flows: {count .argus/flows/*.flow.yaml}
         Suites: {count .argus/suites/*.suite.yaml}
         Bug reports: {count .argus/reports/bugs/*.report.md}
+        Discovery reports: {count .argus/reports/discovery/*.report.md}
+        UI verifications: {count .argus/reports/ui-verification/*.ui-verification.md}
+        Accessibility reports: {count .argus/reports/accessibility/*.accessibility.md}
+        Maintenance reports: {count .argus/reports/maintenance/*.maintenance.md}
 
 on-before-skill:
   description: "Validate config before any Argus skill runs"
@@ -66,6 +70,10 @@ on-after-generate:
         suite: "schemas/suite.schema.md"
         bugreport: "schemas/bugreport.schema.md"
         report: "schemas/report.schema.md"
+        discovery: "schemas/discovery.schema.md"
+        uiverification: "schemas/ui-verification.schema.md"
+        accessibility: "schemas/accessibility.schema.md"
+        maintenance: "schemas/maintenance.schema.md"
       on-fail: "List validation errors, fix before saving"
     - display-summary: true
 
@@ -119,3 +127,40 @@ on-suite-run-stale:
     - "All scenarios referenced in suite still exist in their feature files"
     - "Suite was generated after the latest test case changes"
   on-stale: "Warn user: suite may be outdated. Suggest re-composing before running."
+
+on-after-exploration:
+  description: "Suggest next steps after exploratory testing completes"
+  trigger: "exploratory-tester finishes exploring an app"
+  enabled: true
+  action: |
+    Show discovery summary (pages, elements, API calls).
+    Offer options:
+      A) Analyze a spec for this feature (invokes spec-analyzer)
+      B) Generate a test plan based on findings (invokes test-planner)
+      C) Explore another area of the app
+      D) Done — review the report
+
+on-after-verification:
+  description: "Suggest bug reporting after verification finds issues"
+  trigger: "ui-verifier or accessibility-checker completes with issues found"
+  enabled: true
+  action: |
+    Show issue summary.
+    Offer options:
+      A) File bugs for the issues (invokes bug-reporter)
+      B) Run the other verification skill (ui-verifier ↔ accessibility-checker)
+      C) Done — review the report
+
+on-maintenance-findings:
+  description: "Present tester decision points after maintenance check"
+  trigger: "test-maintainer completes with discrepancies found"
+  enabled: true
+  action: |
+    For each spec vs app discrepancy, ask:
+      A) Spec is correct → file a bug
+      B) App is correct → update the spec
+      C) There's a CR → provide the CR
+    After decisions, offer:
+      A) Update feature file and regenerate downstream artifacts
+      B) File bugs for spec-is-correct items (invokes bug-reporter)
+      C) Done — handle manually
