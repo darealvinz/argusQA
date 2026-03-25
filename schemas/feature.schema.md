@@ -17,6 +17,7 @@ Feature files use markdown with YAML frontmatter. They are the core artifact tha
 | `scenarios` | object[] | yes | List of test scenarios |
 | `scenarios[].id` | string | yes | Unique scenario identifier (e.g., `login-success`) |
 | `scenarios[].type` | enum | yes | `happy` \| `negative` \| `edge` \| `security` |
+| `sources` | string[] | no | List of source files analyzed (e.g., `[srs.docx, wireframe.png, api-contract.yaml]`) |
 
 ## Body Structure
 
@@ -24,8 +25,16 @@ Feature files use markdown with YAML frontmatter. They are the core artifact tha
 # [Feature Name]
 
 ## Requirements
-- Bullet list of requirements extracted from spec
+- Requirements grouped by source, each tagged [source: filename]
 - Each requirement should be testable
+
+## UI Elements
+| Element | Selector | Type | Notes |
+(from wireframes/designs — if available)
+
+## API Endpoints
+| Method | Endpoint | Request | Response | Status Codes |
+(from API contracts — if available)
 
 ## Scenario: [scenario-id]
 

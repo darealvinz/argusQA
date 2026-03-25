@@ -103,7 +103,9 @@ All generated artifacts live in `.argus/`:
 ```
 .argus/
 ├── config.yaml           ← Project configuration
-├── features/             ← Analyzed feature files
+├── specs/                ← Input spec documents (organized per feature)
+│   └── <feature-name>/   ← SRS, wireframes, API contracts, designs
+├── features/             ← Analyzed feature files (output of spec-analyzer)
 ├── test-cases/           ← Generated test cases
 ├── test-data/            ← Generated test data
 ├── flows/                ← E2E flow definitions
@@ -113,6 +115,7 @@ All generated artifacts live in `.argus/`:
 │   ├── mobile/
 │   └── api/
 └── reports/              ← All reports
+    ├── analysis/         ← Spec analysis reports
     ├── discovery/
     ├── ui-verification/
     ├── accessibility/

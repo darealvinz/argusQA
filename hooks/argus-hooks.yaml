@@ -20,6 +20,8 @@ on-session-start:
         UI verifications: {count .argus/reports/ui-verification/*.ui-verification.md}
         Accessibility reports: {count .argus/reports/accessibility/*.accessibility.md}
         Maintenance reports: {count .argus/reports/maintenance/*.maintenance.md}
+        Spec analyses: {count .argus/reports/analysis/*.analysis.md}
+        Specs folders: {count .argus/specs/*/}
 
 on-before-skill:
   description: "Validate config before any Argus skill runs"
@@ -74,6 +76,7 @@ on-after-generate:
         ui-verification: "schemas/ui-verification.schema.md"
         accessibility: "schemas/accessibility.schema.md"
         maintenance: "schemas/maintenance.schema.md"
+        analysis: "schemas/analysis.schema.md"
       on-fail: "List validation errors, fix before saving"
     - display-summary: true
 
