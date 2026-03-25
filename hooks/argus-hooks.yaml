@@ -14,6 +14,8 @@ on-session-start:
         Features: {count .argus/features/*.feature.md}
         Test cases: {count .argus/test-cases/*.testcase.md}
         Flows: {count .argus/flows/*.flow.yaml}
+        Suites: {count .argus/suites/*.suite.yaml}
+        Bug reports: {count .argus/reports/bugs/*.report.md}
 
 on-before-skill:
   description: "Validate config before any Argus skill runs"
@@ -27,7 +29,7 @@ on-before-skill:
 
 on-stale-check:
   description: "Warn if upstream artifacts are newer than downstream"
-  trigger: "test-case-creator, page-object-generator, or flow-composer is about to run"
+  trigger: "test-case-creator, page-object-generator, flow-composer, test-data-generator, or suite-composer is about to run"
   enabled: true
   checks:
     - skill: test-case-creator
@@ -41,6 +43,14 @@ on-stale-check:
     - skill: flow-composer
       upstream: ".argus/features/*.feature.md"
       downstream: ".argus/flows/{flow-name}.flow.yaml"
+    - skill: test-data-generator
+      upstream: ".argus/test-cases/{id}.testcase.md"
+      downstream: ".argus/test-data/{id}.data.json"
+    - skill: suite-composer
+      upstream:
+        - ".argus/test-cases/*.testcase.md"
+        - ".argus/flows/*.flow.yaml"
+      downstream: ".argus/suites/*.suite.yaml"
   on-stale: "Warn user: upstream was updated since downstream was generated. Suggest regenerating."
 
 on-after-generate:
@@ -52,6 +62,10 @@ on-after-generate:
         feature: "schemas/feature.schema.md"
         testcase: "schemas/testcase.schema.md"
         flow: "schemas/flow.schema.md"
+        testdata: "schemas/testdata.schema.md"
+        suite: "schemas/suite.schema.md"
+        bugreport: "schemas/bugreport.schema.md"
+        report: "schemas/report.schema.md"
       on-fail: "List validation errors, fix before saving"
     - display-summary: true
 
@@ -83,3 +97,25 @@ on-flow-gap:
       A) Analyze the missing spec (invokes spec-analyzer)
       B) Skip the missing feature and connect directly
       C) Cancel the flow
+
+on-after-test-run:
+  description: "Suggest reporting after test execution completes"
+  trigger: "test-runner finishes executing tests"
+  enabled: true
+  action: |
+    Show pass/fail summary.
+    Offer options:
+      A) Generate a feature report (invokes report-generator)
+      B) Generate a daily report (invokes report-generator)
+      C) Draft bug reports for failures (invokes bug-reporter)
+      D) Skip — review results manually
+
+on-suite-run-stale:
+  description: "Warn if suite references stale or missing artifacts"
+  trigger: "test-runner is about to execute a suite"
+  enabled: true
+  checks:
+    - "All features referenced in suite still exist in .argus/features/"
+    - "All scenarios referenced in suite still exist in their feature files"
+    - "Suite was generated after the latest test case changes"
+  on-stale: "Warn user: suite may be outdated. Suggest re-composing before running."
