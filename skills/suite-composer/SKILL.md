@@ -31,9 +31,13 @@ Ask the user which type:
 
 1. Read all feature files from `.argus/features/`
 2. Read all test case files from `.argus/test-cases/`
-3. Read all flow files from `.argus/flows/`
-4. Read the test plan from `.argus/test-plan.md`
+3. Read all flow files from `.argus/flows/` (optional — flows enhance suites but are not required)
+4. Read the test plan from `.argus/test-plan.md` (if missing, use config defaults and warn user)
 5. For regression: ask for the PR number, commit, or description of what changed
+
+**If no feature files exist — STOP.** Tell the user: "No feature files found. Run `spec-analyzer` to analyze specs before composing suites."
+
+**If no test case files exist — STOP.** Tell the user: "No test cases found. Run `test-case-creator` to generate test cases before composing suites. Suites are built from test cases."
 
 ### Step 3: Compose Suite
 

@@ -17,17 +17,22 @@ Execute generated automation tests against configured environments and the brows
 
 ### Step 1: Determine What to Run
 
+**First, verify automation code exists.** Check if `.argus/automation/` contains any spec files. If not — **STOP.** Tell the user: "No automation specs found in `.argus/automation/`. Run `page-object-generator` to generate test code before running tests."
+
 Ask the user what to execute:
 
 **A) Single feature:** Run all test specs for one feature
 - Reads from: `.argus/automation/<target>/specs/<feature>.spec.*`
+- **If spec file doesn't exist for this feature:** Tell user: "No test spec found for `<feature>`. Run `page-object-generator` for this feature first."
 
 **B) Suite:** Run a composed suite
 - Reads from: `.argus/suites/<suite-name>.suite.yaml`
 - Resolves which specs and scenarios to include
+- **If suite file doesn't exist:** Tell user: "Suite `<name>` not found. Run `suite-composer` to build a suite first."
 
 **C) Flow:** Run a specific E2E flow
 - Reads from: `.argus/flows/<flow-name>.flow.yaml`
+- **If flow file doesn't exist:** Tell user: "Flow `<name>` not found. Run `flow-composer` to create a flow first."
 
 **D) All:** Run everything
 

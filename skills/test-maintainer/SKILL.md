@@ -28,12 +28,15 @@ The user provides:
 ## Process
 
 ### Step 1: Load Artifacts
+
+**First, verify the feature exists.** Check if `.argus/features/<id>.feature.md` exists. If not — **STOP.** Tell the user: "Feature file `<id>.feature.md` not found in `.argus/features/`. Check the feature ID, or run `spec-analyzer` to create the feature file first."
+
 Read all artifacts related to the feature:
-- `.argus/features/<id>.feature.md` — the spec (source of truth)
-- `.argus/test-cases/<id>.testcase.md` — generated test cases
-- `.argus/automation/*/pages/<id>.*` — page objects
-- `.argus/automation/*/specs/<id>.*` — test specs
-- `.argus/flows/*.flow.yaml` — any flows referencing this feature
+- `.argus/features/<id>.feature.md` — the spec (source of truth) **(required)**
+- `.argus/test-cases/<id>.testcase.md` — generated test cases (if missing, note in report: "No test cases generated yet")
+- `.argus/automation/*/pages/<id>.*` — page objects (if missing, note in report: "No page objects generated yet")
+- `.argus/automation/*/specs/<id>.*` — test specs (if missing, note in report: "No test specs generated yet")
+- `.argus/flows/*.flow.yaml` — any flows referencing this feature (if none, skip flow checks)
 
 ### Step 2: Spec vs App Comparison (URL required)
 1. Navigate to the feature's page via Playwright

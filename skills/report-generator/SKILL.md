@@ -39,6 +39,12 @@ Read all relevant artifacts:
 
 For Feature Reports, ask which feature. For Daily Reports, ask what was tested today.
 
+**If no test cases exist:** Warn the user: "No test cases found in `.argus/test-cases/`. The report will show 0 coverage. Run `test-case-creator` to generate test cases first."
+
+**If no test execution results exist:** Warn the user: "No test execution results available. The report will show no pass/fail data — only coverage counts and artifact status. Run `test-runner` to execute tests first, or proceed with a coverage-only report."
+
+**If no bugs exist:** This is fine — report shows 0 bugs (good news). Do not warn.
+
 ### Step 3: Generate Report
 
 Follow the structure defined in `schemas/report.schema.md` for the selected report type.

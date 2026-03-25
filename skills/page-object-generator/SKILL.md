@@ -44,10 +44,14 @@ Read the feature file from `.argus/features/<id>.feature.md`:
 - Identify every action performed (fill, click, select, navigate, submit)
 - Identify every assertion made (URL check, text check, visibility, value)
 
-Read the test cases from `.argus/test-cases/<id>.cases.md`:
+**If no feature file exists for this feature — STOP.** Tell the user: "No feature file found for `<id>`. Run `spec-analyzer` first to create one."
+
+Read the test cases from `.argus/test-cases/<id>.testcase.md`:
 - Map each test case to its scenario
 - Note the test data placeholders used
 - Note preconditions and teardown requirements
+
+**If no test case file exists — STOP.** Tell the user: "No test cases found for `<id>`. Run `test-case-creator` first to generate them."
 
 ### Step 3: Read Test Plan
 
@@ -55,6 +59,8 @@ Read `.argus/test-plan.md`:
 - Extract the browser matrix (browsers, versions, priority)
 - Extract the device matrix (devices, viewports, priority)
 - Extract the environment URLs
+
+**If no test plan exists:** Use browser/device configuration from `.argus/config.yaml` as fallback. Warn the user: "No test plan found. Using config defaults for browser/device matrix. Run `test-planner` to define a full matrix."
 
 Use this to configure cross-browser/device parameters in the generated spec files.
 

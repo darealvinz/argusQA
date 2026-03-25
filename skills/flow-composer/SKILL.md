@@ -17,7 +17,13 @@ Compose end-to-end test flows by chaining scenarios from multiple feature files.
 
 ### Step 1: Read Feature Files
 
-Read all feature files from `.argus/features/`. Extract the dependency graph from frontmatter:
+Read all feature files from `.argus/features/`.
+
+**If no feature files exist — STOP.** Tell the user: "No feature files found in `.argus/features/`. Run `spec-analyzer` to create feature files before composing flows."
+
+**If only one feature file exists:** Warn the user: "Only 1 feature found. Flows chain multiple features together. Analyze more specs with `spec-analyzer` first, or proceed with a single-feature flow."
+
+Extract the dependency graph from frontmatter:
 - `id` — the node
 - `depends_on` — incoming edges
 - `next` — outgoing edges
