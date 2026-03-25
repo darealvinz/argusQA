@@ -1,0 +1,21 @@
+name: "Regression — PR #456"
+type: regression
+trigger: "PR #456: Fix checkout validation"
+generated: "2026-03-25"
+cases: 77
+estimatedTime: "15 min"
+priority:
+  P0:
+    - feature: checkout
+      scenarios: all
+    - feature: login
+      scenarios: [login-empty-fields, login-success]
+    - feature: payment
+      scenarios: [payment-success]
+  P1:
+    - feature: payment
+      scenarios: all
+  P2: []
+skipReason:
+  add-to-cart: "No overlap with change"
+  search: "No overlap with change"

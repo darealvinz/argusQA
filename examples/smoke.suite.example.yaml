@@ -1,0 +1,18 @@
+name: Smoke Suite
+type: smoke
+generated: "2026-03-25"
+cases: 4
+estimatedTime: "3 min"
+selection:
+  - feature: login
+    scenarios: [login-success]
+  - feature: add-to-cart
+    scenarios: [add-single-item]
+  - feature: checkout
+    scenarios: [checkout-standard]
+  - feature: payment
+    scenarios: [payment-success]
+flows:
+  - happy-purchase.flow.yaml
+browsers: [chrome]
+devices: [Desktop]
