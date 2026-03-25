@@ -71,7 +71,7 @@ on-after-generate:
         bugreport: "schemas/bugreport.schema.md"
         report: "schemas/report.schema.md"
         discovery: "schemas/discovery.schema.md"
-        uiverification: "schemas/ui-verification.schema.md"
+        ui-verification: "schemas/ui-verification.schema.md"
         accessibility: "schemas/accessibility.schema.md"
         maintenance: "schemas/maintenance.schema.md"
       on-fail: "List validation errors, fix before saving"
