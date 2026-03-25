@@ -13,7 +13,7 @@ npx skills add argus
 
 **Via git clone:**
 ```bash
-git clone https://github.com/argus-testing/argus.git
+git clone https://github.com/darealvinz/argusQA.git
 cd argus
 ./setup
 ```

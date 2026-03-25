@@ -30,7 +30,7 @@ npx skills add argus
 
 **Or clone manually:**
 ```bash
-git clone https://github.com/argus-testing/argus.git ~/.claude/skills/argus
+git clone https://github.com/darealvinz/argusQA.git ~/.claude/skills/argus
 cd ~/.claude/skills/argus && ./setup
 ```
 
