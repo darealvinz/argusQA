@@ -1,0 +1,126 @@
+{
+  "featureId": "login",
+  "generatedFrom": "login.testcase.md",
+  "dataSets": {
+    "valid": [
+      {
+        "name": "standard-user",
+        "description": "Regular user with valid credentials",
+        "data": {
+          "email": "john.doe@example.com",
+          "password": "P@ssword123!"
+        }
+      },
+      {
+        "name": "admin-user",
+        "description": "Admin user with elevated privileges",
+        "data": {
+          "email": "admin@example.com",
+          "password": "Adm1n$ecure!"
+        }
+      }
+    ],
+    "invalid": [
+      {
+        "name": "empty-email",
+        "description": "Email field left empty",
+        "data": {
+          "email": "",
+          "password": "P@ssword123!"
+        },
+        "expectedError": "Email is required"
+      },
+      {
+        "name": "empty-password",
+        "description": "Password field left empty",
+        "data": {
+          "email": "john.doe@example.com",
+          "password": ""
+        },
+        "expectedError": "Password is required"
+      },
+      {
+        "name": "wrong-password",
+        "description": "Valid email with incorrect password",
+        "data": {
+          "email": "john.doe@example.com",
+          "password": "WrongPass!"
+        },
+        "expectedError": "Invalid credentials"
+      },
+      {
+        "name": "nonexistent-user",
+        "description": "Email not registered in the system",
+        "data": {
+          "email": "nobody@example.com",
+          "password": "P@ssword123!"
+        },
+        "expectedError": "Invalid credentials"
+      },
+      {
+        "name": "invalid-email-format",
+        "description": "Malformed email address",
+        "data": {
+          "email": "not-an-email",
+          "password": "P@ssword123!"
+        },
+        "expectedError": "Invalid email format"
+      }
+    ],
+    "edge": [
+      {
+        "name": "email-with-spaces",
+        "description": "Leading/trailing spaces in email",
+        "data": {
+          "email": "  john.doe@example.com  ",
+          "password": "P@ssword123!"
+        }
+      },
+      {
+        "name": "max-length-email",
+        "description": "Email at maximum allowed length (254 chars)",
+        "data": {
+          "email": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@example.com",
+          "password": "P@ssword123!"
+        }
+      },
+      {
+        "name": "unicode-password",
+        "description": "Password with unicode characters",
+        "data": {
+          "email": "john.doe@example.com",
+          "password": "Pässwörd123!日本語"
+        }
+      }
+    ],
+    "security": [
+      {
+        "name": "sql-injection-email",
+        "description": "SQL injection attempt in email field",
+        "data": {
+          "email": "' OR 1=1--",
+          "password": "anything"
+        },
+        "expectedBehavior": "Input sanitized, error message shown, no DB bypass"
+      },
+      {
+        "name": "xss-email",
+        "description": "XSS attempt in email field",
+        "data": {
+          "email": "<script>alert('xss')</script>",
+          "password": "anything"
+        },
+        "expectedBehavior": "Input sanitized, no script execution"
+      },
+      {
+        "name": "brute-force-sequence",
+        "description": "5 consecutive wrong passwords for account lockout test",
+        "data": {
+          "email": "john.doe@example.com",
+          "passwords": ["Wrong1!", "Wrong2!", "Wrong3!", "Wrong4!", "Wrong5!"]
+        },
+        "expectedBehavior": "Account locked or CAPTCHA triggered after 5th attempt"
+      }
+    ]
+  }
+}
