@@ -10,7 +10,7 @@
 
 **Spec:** `docs/superpowers/specs/2026-03-24-ai-test-skills-design.md`
 
-**Working Directory:** `D:/ToolsByMe/AITest` — This is the Argus project root. All paths in this plan are relative to this directory.
+**Working Directory:** Project root (where `package.json` lives). All paths in this plan are relative to this directory.
 
 **Prerequisites:** Run `git init` in the working directory before starting Task 1 (if not already a git repo).
 
@@ -19,7 +19,7 @@
 ## File Structure
 
 ```
-D:/ToolsByMe/AITest/   (project root)
+argus/   (project root)
 ├── package.json                             # npm metadata
 ├── setup                                    # Setup script for manual git clone installs
 ├── README.md                                # Getting started guide
