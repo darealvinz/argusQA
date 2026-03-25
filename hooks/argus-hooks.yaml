@@ -1,0 +1,85 @@
+# Argus Agent Hooks
+# Automated behaviors that trigger on specific events during the agent session.
+# Users can override per project in .argus/config.yaml under the 'hooks' key.
+
+on-session-start:
+  description: "Auto-load Argus when project has .argus/ directory"
+  trigger: ".argus/ directory exists in project root"
+  enabled: true
+  actions:
+    - load-skill: using-argus
+    - display: |
+        Argus loaded for project: {config.project.name}
+        Stack: {config.stack.language} + {config.stack.web}
+        Features: {count .argus/features/*.feature.md}
+        Test cases: {count .argus/test-cases/*.testcase.md}
+        Flows: {count .argus/flows/*.flow.yaml}
+
+on-before-skill:
+  description: "Validate config before any Argus skill runs"
+  trigger: "Any Argus skill is about to run"
+  enabled: true
+  actions:
+    - check: ".argus/config.yaml exists"
+      on-fail: "No Argus config found. Run 'Set up Argus for this project' first."
+    - check: "Required config fields are present for the specific skill"
+      on-fail: "List missing fields, ask user to configure"
+
+on-stale-check:
+  description: "Warn if upstream artifacts are newer than downstream"
+  trigger: "test-case-creator, page-object-generator, or flow-composer is about to run"
+  enabled: true
+  checks:
+    - skill: test-case-creator
+      upstream: ".argus/features/{id}.feature.md"
+      downstream: ".argus/test-cases/{id}.testcase.md"
+    - skill: page-object-generator
+      upstream:
+        - ".argus/features/{id}.feature.md"
+        - ".argus/test-cases/{id}.testcase.md"
+      downstream: ".argus/automation/*/pages/{id}.*"
+    - skill: flow-composer
+      upstream: ".argus/features/*.feature.md"
+      downstream: ".argus/flows/{flow-name}.flow.yaml"
+  on-stale: "Warn user: upstream was updated since downstream was generated. Suggest regenerating."
+
+on-after-generate:
+  description: "Validate output and show summary after artifact generation"
+  trigger: "Any Argus skill produces an artifact"
+  enabled: true
+  actions:
+    - validate-schema:
+        feature: "schemas/feature.schema.md"
+        testcase: "schemas/testcase.schema.md"
+        flow: "schemas/flow.schema.md"
+      on-fail: "List validation errors, fix before saving"
+    - display-summary: true
+
+on-feature-change:
+  description: "List downstream artifacts that may need regeneration"
+  trigger: "A .feature.md file in .argus/features/ is modified"
+  enabled: true
+  action: "List all downstream artifacts that reference this feature ID"
+
+on-test-fail:
+  description: "Suggest bug reporting after test failures"
+  trigger: "test-runner reports failed test cases"
+  enabled: true
+  auto-suggest: true
+  action: |
+    List failed test cases with IDs.
+    Offer options:
+      A) Draft bug reports for all failures (invokes bug-reporter)
+      B) Draft bug reports for critical failures only
+      C) Skip — review manually
+
+on-flow-gap:
+  description: "Suggest filling missing features in flow chains"
+  trigger: "flow-composer detects a missing feature in dependency chain"
+  enabled: true
+  action: |
+    Show the gap in the chain.
+    Offer options:
+      A) Analyze the missing spec (invokes spec-analyzer)
+      B) Skip the missing feature and connect directly
+      C) Cancel the flow
