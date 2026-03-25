@@ -64,6 +64,7 @@ cd argus
 
 ```
 argus/
+├── config/            # Example config for project setup
 ├── schemas/           # Artifact format definitions
 ├── examples/          # Example artifacts for reference
 ├── skills/            # Skill files (SKILL.md per skill)

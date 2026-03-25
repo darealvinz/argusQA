@@ -28,7 +28,7 @@ If the project doesn't have a `.argus/` folder yet, help the user set one up:
 3. Generate `.argus/config.yaml` from answers
 4. Confirm setup is complete
 
-Reference the config schema at `schemas/config.schema.yaml` for valid values.
+Reference the example config at `config/config.example.yaml` for valid values.
 
 ## Available Skills
 
