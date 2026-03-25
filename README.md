@@ -57,8 +57,8 @@ cd argus
 ## Phase Roadmap
 
 - **Phase 1**: Core skills — test planning, spec analysis, test case generation, page object generation, flow composition
-- **Phase 2** (current): Integration & execution — test data, suites, runner, bug reporting, reports, Jira
-- **Phase 3**: Discovery & verification — exploratory testing, UI verification, accessibility, test maintenance
+- **Phase 2**: Integration & execution — test data, suites, runner, bug reporting, reports, Jira
+- **Phase 3** (current): Discovery & verification — exploratory testing, UI verification, accessibility, test maintenance
 
 ## Project Structure
 
