@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/argus-logo.svg" alt="Argus Logo" width="600"/>
+  <img src="assets/argus-logo.png" alt="Argus Logo" width="600"/>
 </p>
 
 # Argus — AI-Powered QA Testing Skills
