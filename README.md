@@ -98,44 +98,39 @@ Each project using Argus has a `.argus/` directory:
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                      Coding Agent                           │
-│                (Claude Code / Cursor / etc.)                │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  ┌─────────────┐    ┌──────────────┐    ┌───────────────┐  │
-│  │  Planning &  │    │  Generation  │    │  Composition  │  │
-│  │    Input     │    │              │    │               │  │
-│  │             │    │             │    │              │  │
-│  │ test-planner │───▶│ test-case-   │───▶│ flow-composer │  │
-│  │ spec-analyzer│    │  creator     │    │ suite-composer│  │
-│  │             │    │ page-object- │    │              │  │
-│  │             │    │  generator   │    │              │  │
-│  │             │    │ test-data-   │    │              │  │
-│  │             │    │  generator   │    │              │  │
-│  └─────────────┘    └──────────────┘    └──────┬────────┘  │
-│                                                 │           │
-│  ┌─────────────┐    ┌──────────────┐    ┌──────▼────────┐  │
-│  │ Verification │    │  Reporting   │    │  Execution &  │  │
-│  │              │    │              │    │  Maintenance  │  │
-│  │ ui-verifier  │    │ bug-reporter │◀───│ test-runner   │  │
-│  │ accessibility│    │ report-      │    │ test-         │  │
-│  │  -checker    │    │  generator   │    │  maintainer   │  │
-│  │              │    │ report-      │    │               │  │
-│  │              │    │  exporter    │    │               │  │
-│  └──────────────┘    └──────────────┘    └───────────────┘  │
-│                                                             │
-├─────────────────────────────────────────────────────────────┤
-│  Integration: jira-connector · exploratory-tester · hooks   │
-└─────────────────────────────────────────────────────────────┘
-         │                                        │
-         ▼                                        ▼
-┌─────────────────┐                 ┌─────────────────────────┐
-│  .argus/config   │                 │  .argus/ artifacts      │
-│  (your stack,    │                 │  features/ test-cases/  │
-│   browsers,      │                 │  flows/ automation/     │
-│   environments)  │                 │  reports/               │
-└─────────────────┘                 └─────────────────────────┘
+                        Coding Agent (Claude Code / Cursor / etc.)
+┌──────────────────────────────────────────────────────────────────────┐
+│                                                                      │
+│   PLAN              GENERATE            COMPOSE          EXECUTE     │
+│  ┌──────────┐     ┌──────────────┐    ┌─────────────┐  ┌─────────┐ │
+│  │ test-    ─┼────▶│ test-case-   ├───▶│ flow-       ├─▶│ test-   │ │
+│  │  planner  │     │  creator     │    │  composer   │  │  runner │ │
+│  │ spec-     │     │ page-object- │    │ suite-      │  │ test-   │ │
+│  │  analyzer │     │  generator   │    │  composer   │  │  main-  │ │
+│  │           │     │ test-data-   │    │             │  │  tainer │ │
+│  │           │     │  generator   │    │             │  │         │ │
+│  └──────────┘     └──────────────┘    └─────────────┘  └────┬────┘ │
+│                                                              │      │
+│   DISCOVER          VERIFY              REPORT               │      │
+│  ┌──────────┐     ┌──────────────┐    ┌─────────────┐       │      │
+│  │ explora- │     │ ui-verifier  │    │ bug-reporter │◀──────┘      │
+│  │  tory-   │     │ accessi-     │    │ report-      │              │
+│  │  tester  │     │  bility-     │    │  generator   │              │
+│  │           │     │  checker    │    │ report-      │              │
+│  │           │     │             │    │  exporter    │              │
+│  └──────────┘     └──────────────┘    └─────────────┘              │
+│                                                                      │
+│   INTEGRATE: jira-connector · hooks                                  │
+└───────────────────────────┬──────────────────────────────────────────┘
+                            │
+                            ▼
+              ┌──────────────────────────┐
+              │        .argus/           │
+              │  config.yaml  features/  │
+              │  test-cases/  flows/     │
+              │  automation/  reports/   │
+              │  artifacts/              │
+              └──────────────────────────┘
 ```
 
 **Flow:** Spec → Feature File → Test Cases → Page Objects → Flows → Suites → Execution → Reports
