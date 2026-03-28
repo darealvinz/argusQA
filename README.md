@@ -97,40 +97,51 @@ Each project using Argus has a `.argus/` directory:
 
 ## Architecture
 
-```
-                        Coding Agent (Claude Code / Cursor / etc.)
-┌──────────────────────────────────────────────────────────────────────┐
-│                                                                      │
-│   PLAN              GENERATE            COMPOSE          EXECUTE     │
-│  ┌──────────┐     ┌──────────────┐    ┌─────────────┐  ┌─────────┐ │
-│  │ test-    ─┼────▶│ test-case-   ├───▶│ flow-       ├─▶│ test-   │ │
-│  │  planner  │     │  creator     │    │  composer   │  │  runner │ │
-│  │ spec-     │     │ page-object- │    │ suite-      │  │ test-   │ │
-│  │  analyzer │     │  generator   │    │  composer   │  │  main-  │ │
-│  │           │     │ test-data-   │    │             │  │  tainer │ │
-│  │           │     │  generator   │    │             │  │         │ │
-│  └──────────┘     └──────────────┘    └─────────────┘  └────┬────┘ │
-│                                                              │      │
-│   DISCOVER          VERIFY              REPORT               │      │
-│  ┌──────────┐     ┌──────────────┐    ┌─────────────┐       │      │
-│  │ explora- │     │ ui-verifier  │    │ bug-reporter │◀──────┘      │
-│  │  tory-   │     │ accessi-     │    │ report-      │              │
-│  │  tester  │     │  bility-     │    │  generator   │              │
-│  │           │     │  checker    │    │ report-      │              │
-│  │           │     │             │    │  exporter    │              │
-│  └──────────┘     └──────────────┘    └─────────────┘              │
-│                                                                      │
-│   INTEGRATE: jira-connector · hooks                                  │
-└───────────────────────────┬──────────────────────────────────────────┘
-                            │
-                            ▼
-              ┌──────────────────────────┐
-              │        .argus/           │
-              │  config.yaml  features/  │
-              │  test-cases/  flows/     │
-              │  automation/  reports/   │
-              │  artifacts/              │
-              └──────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph Agent["Coding Agent (Claude Code / Cursor / etc.)"]
+        direction TB
+        subgraph Plan["PLAN"]
+            test-planner
+            spec-analyzer
+        end
+        subgraph Generate["GENERATE"]
+            test-case-creator
+            page-object-generator
+            test-data-generator
+        end
+        subgraph Compose["COMPOSE"]
+            flow-composer
+            suite-composer
+        end
+        subgraph Execute["EXECUTE"]
+            test-runner
+            test-maintainer
+        end
+        subgraph Discover["DISCOVER"]
+            exploratory-tester
+        end
+        subgraph Verify["VERIFY"]
+            ui-verifier
+            accessibility-checker
+        end
+        subgraph Report["REPORT"]
+            bug-reporter
+            report-generator
+            report-exporter
+        end
+        subgraph Integrate["INTEGRATE"]
+            jira-connector
+            hooks
+        end
+    end
+
+    Plan --> Generate --> Compose --> Execute
+    Execute --> Report
+    Discover --> Plan
+    Verify --> Report
+
+    Agent --> Output[".argus/ — config, features, test-cases, flows, automation, reports, artifacts"]
 ```
 
 **Flow:** Spec → Feature File → Test Cases → Page Objects → Flows → Suites → Execution → Reports
