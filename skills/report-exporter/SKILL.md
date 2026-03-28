@@ -149,33 +149,21 @@ Map to the 9-column xlsx format:
 - **Known Bug / Notes** → If test step text contains "KNOWN BUG:" extract that note, otherwise leave blank
 - **Status** → Leave blank (not executed yet)
 
-**Python script pattern:**
+**Run the permanent export script:**
 
-```python
-import openpyxl
-from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
-from openpyxl.utils import get_column_letter
-
-wb = openpyxl.Workbook()
-
-# -- Sheet 1: Summary --
-ws_summary = wb.active
-ws_summary.title = "Summary"
-# ... populate summary data ...
-
-# -- Sheet 2: Test Cases --
-ws_cases = wb.create_sheet("Test Cases")
-# ... populate test case rows ...
-
-wb.save(".argus/artifacts/<feature>.testcase.xlsx")
+```bash
+python scripts/export-testcase.py .argus/test-cases/<feature>.testcase.md
 ```
 
-Run this script using the Bash tool: `python -c "<script>"`
+This outputs to `.argus/artifacts/<feature>.testcase.xlsx` automatically.
 
-If the script is too long for inline execution, write it to a temp file first:
-1. Write script to `.argus/artifacts/_export_temp.py`
-2. Run: `python .argus/artifacts/_export_temp.py`
-3. Delete: `rm .argus/artifacts/_export_temp.py`
+To specify a custom output path:
+
+```bash
+python scripts/export-testcase.py .argus/test-cases/<feature>.testcase.md custom-output.xlsx
+```
+
+**Requires:** Python 3 + openpyxl (`pip install openpyxl`)
 
 ---
 
