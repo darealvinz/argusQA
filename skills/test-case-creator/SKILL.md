@@ -1,3 +1,4 @@
+---
 name: test-case-creator
 description: Use when you need to generate test cases from a feature file — produces comprehensive test cases across UI, Functional, API, Security, and Data layers
 ---
