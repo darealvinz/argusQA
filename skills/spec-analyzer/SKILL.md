@@ -123,13 +123,119 @@ Types of gaps:
 - **In Business but not Frontend/Backend** — Requirement stated but not designed or built
 - **In Frontend/Backend but not Business** — Implemented but not in requirements
 
+#### Validation Detail Audit
+
+For **every input field** identified in the spec, check whether these details are defined. Flag anything missing — do not assume values.
+
+| Check | What to Look For |
+|-------|-----------------|
+| **Required/Optional** | Is the field mandatory? What happens if left empty? |
+| **Min length** | Minimum characters allowed (e.g., password min 8) |
+| **Max length** | Maximum characters allowed (e.g., username max 50) |
+| **Format rules** | Expected pattern — email, phone, URL, date, currency, etc. |
+| **Allowed characters** | Alphanumeric only? Special chars allowed? Unicode? |
+| **Complexity rules** | Password strength requirements (uppercase, number, symbol) |
+| **Default value** | Pre-filled value, if any |
+| **Error messages** | Specific message for each validation failure |
+| **Whitespace handling** | Trim leading/trailing? Allow spaces in middle? |
+
+Present as a per-field audit table:
+
+```
+### Validation Detail Audit
+
+| Field | Required | Min | Max | Format | Allowed Chars | Error Messages | Status |
+|-------|----------|-----|-----|--------|--------------|----------------|--------|
+| Email | ✅ Yes | ❓ | ❓ | ❓ email format? | ❓ | ❓ | 4 gaps |
+| Password | ✅ Yes | ❓ | ❓ | — | ❓ complexity? | ✅ "Invalid credentials" | 3 gaps |
+| Username | ❓ | ❓ | ❓ | ❓ | ❓ | ❓ | 6 gaps |
+```
+
+**Rules:**
+- ✅ = defined in spec, ❓ = not defined (gap)
+- Every ❓ becomes a question for the tester
+- **Never fill in assumed values.** If the spec says nothing about password max length, flag it as ❓, don't assume 64.
+- If the user says "assume X for now," record it as: `⚠️ Assumption (per tester): X` — this carries forward into the feature file and test cases for traceability.
+
+#### Best Practice Gap Analysis
+
+Beyond what's explicitly in the spec, check for common areas that specs frequently miss. These are **not** invented requirements — they are prompts to ask the stakeholder "did you consider this?"
+
+Flag only items relevant to the feature. Don't apply the full list to every feature — use judgment.
+
+| Category | What to Check |
+|----------|--------------|
+| **Security** | Rate limiting, brute force protection, account lockout threshold and duration, CAPTCHA triggers |
+| **Session** | Session timeout duration, concurrent session handling (allow multiple? kick previous?), session token storage (cookie vs localStorage) |
+| **Authentication** | Token expiry duration, refresh token behavior, logout (single device or all devices?), password reset flow details |
+| **Error Handling** | Error messages for every failure path, generic vs specific errors (security consideration), retry behavior |
+| **Loading States** | Loading indicators during async operations, disabled states to prevent double-submit, timeout handling |
+| **Empty/Edge States** | Empty state UI (no data), first-time user experience, what happens at 0 items |
+| **Accessibility** | Keyboard navigation, screen reader labels, focus management, color contrast |
+| **Internationalization** | Unicode support, RTL text handling, date/currency format, translation-ready labels |
+| **Data** | Pagination limits, file upload limits (size, type, count), data retention/deletion policy |
+| **Audit** | Logging for sensitive actions (login, password change, deletion), failed attempt tracking |
+| **Infrastructure** | HTTPS enforcement, CORS policy, API versioning |
+
+Present as a checklist of relevant items:
+
+```
+### Best Practice Gap Analysis
+
+Items not covered in the spec that may need stakeholder input:
+
+⚠️ Security
+- [ ] Account lockout duration not specified (5 attempts defined, but how long is lockout?)
+- [ ] CAPTCHA trigger point not defined
+
+⚠️ Session
+- [ ] Concurrent session policy not mentioned — allow multiple logins?
+- [ ] Token storage location not specified (cookie vs localStorage)
+
+⚠️ Error Handling
+- [ ] No error message defined for rate-limited state (429)
+- [ ] Generic "Invalid credentials" vs separate "Email not found" / "Wrong password" — which approach?
+
+✅ Authentication — covered (token expiry 24h defined in SRS)
+✅ Data — not applicable for this feature
+```
+
+**Rules:**
+- Only flag categories relevant to the feature (don't flag "file upload limits" for a login feature)
+- Mark categories as ✅ if covered or not applicable
+- Each ⚠️ item becomes a question for the tester
+- These are **questions, not requirements** — the stakeholder may say "not needed" and that's valid
+
 #### Questions for Tester
-Bullet list of ambiguities, missing info, and decisions needed before proceeding.
+
+Consolidate all questions from three sources into a single prioritized list:
+
+1. **Cross-source gaps** — discrepancies between business/frontend/backend specs
+2. **Validation detail gaps** — missing field constraints (from Validation Detail Audit)
+3. **Best practice gaps** — common areas the spec doesn't address (from Best Practice Gap Analysis)
+
+Tag each question with its source:
+
+```
+1. [Cross-source] Google SSO — wireframe shows button but no backend endpoint. In scope? (Gap #1)
+2. [Validation] Email field — max length not specified. What is the limit?
+3. [Validation] Password — complexity rules not defined. Required uppercase/number/symbol?
+4. [Best Practice] Account lockout — 5 attempts defined, but lockout duration not specified. How long?
+5. [Best Practice] Concurrent sessions — can a user be logged in on multiple devices?
+```
+
+For each question, the user can respond:
+- **Answer** — provide the value → recorded as confirmed requirement
+- **Check with stakeholder** — parked, proceed with other parts
+- **Assume X** → recorded as `⚠️ Assumption (per tester): X` with traceability
 
 #### Summary
 - Total requirements extracted
-- Total gaps found
+- Total cross-source gaps found
+- Total validation detail gaps found
+- Total best practice gaps found
 - Total questions needing answers
+- Assumptions recorded (if any)
 
 ### Step 3: Present Analysis Report for Review
 
