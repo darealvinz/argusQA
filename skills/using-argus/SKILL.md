@@ -68,6 +68,7 @@ Reference the example config at `config/config.example.yaml` for valid values.
 |-------|---------------|
 | `bug-reporter` | A test failed and you need to draft a bug ticket |
 | `report-generator` | You need a sprint, feature, daily, or release report |
+| `report-exporter` | You need to export test cases, discovery reports, or bug reports to Excel or HTML for sharing with stakeholders |
 
 ### Integration
 | Skill | Invoke when... |
@@ -114,6 +115,7 @@ All generated artifacts live in `.argus/`:
 │   ├── web/
 │   ├── mobile/
 │   └── api/
+├── artifacts/            # Presentation-ready HTML and Excel exports
 └── reports/              ← All reports
     ├── analysis/         ← Spec analysis reports
     ├── discovery/
