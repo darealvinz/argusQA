@@ -43,6 +43,7 @@ cd argus
 | 13 | `exploratory-tester` | 3 | Explore an app to understand flows |
 | 14 | `ui-verifier` | 3 | Compare designs against live app |
 | 15 | `accessibility-checker` | 3 | WCAG compliance checks |
+| 16 | `report-exporter` | 3 | Export test cases to Excel, discovery/bug reports to styled HTML |
 
 ## Supported Stacks
 
@@ -58,7 +59,7 @@ cd argus
 
 - **Phase 1**: Core skills — test planning, spec analysis, test case generation, page object generation, flow composition
 - **Phase 2**: Integration & execution — test data, suites, runner, bug reporting, reports, Jira
-- **Phase 3** (current): Discovery & verification — exploratory testing, UI verification, accessibility, test maintenance
+- **Phase 3** (current): Discovery & verification — exploratory testing, UI verification, accessibility, test maintenance, artifact export
 
 ## Project Structure
 
@@ -68,6 +69,7 @@ argus/
 ├── schemas/           # Artifact format definitions
 ├── examples/          # Example artifacts for reference
 ├── skills/            # Skill files (SKILL.md per skill)
+├── scripts/           # Reusable export scripts (xlsx generation)
 ├── hooks/             # Agent hook definitions
 ├── setup              # Setup script for git clone installs
 └── package.json       # Package metadata
@@ -82,7 +84,8 @@ Each project using Argus has a `.argus/` directory:
 ├── test-cases/        # Generated test cases
 ├── flows/             # E2E flow definitions
 ├── automation/        # Generated page objects and specs
-└── reports/           # All reports
+├── reports/           # All reports
+└── artifacts/         # Exported HTML and Excel files
 ```
 
 ## Key Principles
@@ -118,6 +121,8 @@ Each project using Argus has a `.argus/` directory:
 │  │ ui-verifier  │    │ bug-reporter │◀───│ test-runner   │  │
 │  │ accessibility│    │ report-      │    │ test-         │  │
 │  │  -checker    │    │  generator   │    │  maintainer   │  │
+│  │              │    │ report-      │    │               │  │
+│  │              │    │  exporter    │    │               │  │
 │  └──────────────┘    └──────────────┘    └───────────────┘  │
 │                                                             │
 ├─────────────────────────────────────────────────────────────┤
