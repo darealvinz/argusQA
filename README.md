@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/argus-logo.svg" alt="Argus Logo" width="600"/>
+</p>
+
 # Argus — AI-Powered QA Testing Skills
 
 > The 100-eyed watchman for your test automation.
