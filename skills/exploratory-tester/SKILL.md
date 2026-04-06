@@ -72,11 +72,49 @@ Navigate through the scoped area by:
    - Inspect DOM elements and capture selectors
    - Record API calls (method, endpoint, status, response type)
    - Note behaviors (animations, state changes, transitions)
+   - Extract field specifications (see Step 4a below)
 3. Track visited pages to avoid loops
 4. Respect depth and breadth limits
 
+#### Step 4a: Extract Field Specifications (passive DOM read)
+
+At each page, for every `<input>`, `<select>`, `<textarea>`, and form-associated element found, passively read the following from the DOM. **Do not type, click, or submit — read attributes only.**
+
+**Element attributes to capture:**
+
+| Attribute | What It Tells Us |
+|-----------|-----------------|
+| `type` | Input type (text, email, password, number, tel, date, etc.) |
+| `required` | Whether field is mandatory |
+| `minlength` / `maxlength` | Character length constraints |
+| `min` / `max` / `step` | Numeric/date range constraints |
+| `pattern` | Regex validation pattern |
+| `placeholder` | Hint text shown in empty field |
+| `disabled` / `readonly` | Field editability state |
+| `autocomplete` | Browser autofill hint (reveals field purpose) |
+| `inputmode` | Expected input type (numeric, email, tel, url) |
+| `accept` | Allowed file types (for file inputs) |
+| `multiple` | Whether multiple values allowed |
+
+**Contextual info to capture:**
+
+| Data | How to Extract |
+|------|---------------|
+| Label | `<label for="">` text, `aria-label`, `aria-labelledby` target text |
+| Help text | `aria-describedby` target text, sibling/child elements matching `.help`, `.hint`, `.description`, `[class*="help"]`, `[class*="hint"]` |
+| Options | All `<option>` values and text for `<select>` elements; radio group values |
+| Error containers | Elements with `role="alert"`, `.error`, `.invalid`, `[data-error]` — capture selector even if content is empty |
+| Field grouping | Parent `<fieldset>` with `<legend>`, or `role="group"` with `aria-label` |
+| Visibility state | Whether element is visible, hidden (`hidden`, `display:none`, `aria-hidden`), or disabled |
+
+**Rules:**
+- Passive only — read attributes, do not type, click, or submit
+- Capture what's in the DOM, don't infer what's missing (that's spec-analyzer's job)
+- If a field has no constraints in the DOM, record it as-is — the absence of constraints is useful information
+- Record field data into Section 8 of the discovery report (see schema)
+
 ### Step 5: Compile Report
-Generate the discovery report following the schema at `schemas/discovery.schema.md`.
+Generate the discovery report following the schema at `schemas/discovery.schema.md`. Include Section 8 (Field Specifications Discovered) for every page that contains form fields.
 
 ## Exploration Bounds
 
@@ -127,10 +165,12 @@ Reference schema: `schemas/discovery.schema.md`
 Save the discovery report, then present it to the user for review:
 
 ```
-Exploration complete. Discovered 4 pages, 15 elements, 4 API calls.
+Exploration complete. Discovered {pages} pages, {elements} elements, {fields} form fields with constraints, {apis} API calls.
 
 Here's what I found — please review the discovery report below.
 This shows what the app currently DOES, not necessarily what it SHOULD do.
+Field specifications are extracted from DOM attributes only (passive read).
+Missing constraints don't mean "no constraint" — they mean "not enforced in HTML."
 ```
 
 After presenting the report, suggest next steps:
