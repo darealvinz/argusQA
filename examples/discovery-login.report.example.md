@@ -5,6 +5,7 @@ url: https://staging.myapp.com/login
 timestamp: 2026-03-20T14:30:00Z
 auth_method: none
 pages_discovered: 4
+fields_discovered: 5
 max_depth_reached: 3
 status: complete
 ---
@@ -76,3 +77,20 @@ Explored the login flow starting from `https://staging.myapp.com/login`. Discove
 - Google SSO popup — should we test the full OAuth flow or just verify the redirect?
 - "Remember me" checkbox — what is the expected session duration when checked vs unchecked?
 - The dashboard has a "Delete Account" button — should this be explored manually?
+
+## Field Specifications Discovered
+
+### Login Page (/login)
+
+| Field | Label | Type | Required | Constraints | Options | Help Text | Error Container | Visibility | Notes |
+|-------|-------|------|----------|-------------|---------|-----------|-----------------|------------|-------|
+| `input#email` | Email Address | email | Yes | maxlength=255 | — | — | `.email-error` | visible | autocomplete=email |
+| `input#password` | Password | password | Yes | minlength=8, maxlength=128 | — | — | `.password-error` | visible | autocomplete=current-password |
+| `button.toggle-password` | — | button | — | — | — | — | — | visible | Toggles password visibility |
+| `input#remember-me` | Remember me | checkbox | No | — | — | Stay signed in for 30 days | — | visible | Default: unchecked |
+
+### Forgot Password Page (/forgot-password)
+
+| Field | Label | Type | Required | Constraints | Options | Help Text | Error Container | Visibility | Notes |
+|-------|-------|------|----------|-------------|---------|-----------|-----------------|------------|-------|
+| `input#reset-email` | Email Address | email | Yes | maxlength=255 | — | Enter the email associated with your account | `.reset-error` | visible | autocomplete=email |
