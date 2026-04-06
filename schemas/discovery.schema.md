@@ -18,6 +18,7 @@ url: <entry point URL>
 timestamp: <ISO 8601>
 auth_method: <form | cookie | token | none>
 pages_discovered: <number>
+fields_discovered: <number>
 max_depth_reached: <number>
 status: <complete | partial | failed>
 ---
@@ -54,6 +55,29 @@ Flagged as "needs manual exploration."
 
 ### 7. Questions for Tester
 Bullet list of undocumented features, ambiguous behaviors, potential issues the tester should investigate.
+
+### 8. Field Specifications Discovered
+
+Per-page table of form fields and their DOM-observable constraints. One table per page that contains form elements.
+
+#### Page: [page name]
+
+| Field | Label | Type | Required | Constraints | Options | Help Text | Error Container | Visibility | Notes |
+|-------|-------|------|----------|-------------|---------|-----------|-----------------|------------|-------|
+
+Column definitions:
+- **Field**: Selector for the element (e.g., `input#email`, `select#country`)
+- **Label**: Associated label text — from `<label for="">`, `aria-label`, or `aria-labelledby` target text
+- **Type**: Input type attribute (text, email, password, number, tel, date, select, textarea, checkbox, radio, file, etc.)
+- **Required**: Yes / No / — (based on `required` attribute presence)
+- **Constraints**: Concatenated from: `minlength`, `maxlength`, `min`, `max`, `step`, `pattern`, `accept`, `inputmode`. Use format: `minlength=8, maxlength=128`. If none, use —
+- **Options**: For `<select>`: list of `<option>` values. For radio groups: list of values. Otherwise —
+- **Help Text**: From `aria-describedby` target text, or sibling/child elements matching `.help`, `.hint`, `.description`, `[class*="help"]`, `[class*="hint"]`
+- **Error Container**: Selector for associated error message element (`role="alert"`, `.error`, `.invalid`, `[data-error]`). Capture even if content is empty. If none found, use —
+- **Visibility**: `visible` / `hidden` / `disabled`. If hidden, note likely conditional trigger in Notes
+- **Notes**: Notable attributes (e.g., `autocomplete=new-password`, `inside fieldset: Personal Info`, `readonly`)
+
+Only include pages that have form fields. Pages with no `<input>`, `<select>`, or `<textarea>` elements are skipped.
 
 ## Exploration Bounds
 
