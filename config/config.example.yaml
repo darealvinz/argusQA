@@ -6,11 +6,19 @@ project:
   id: "my-ecommerce"
 
 auth:
-  method: form
-  loginUrl: "/login"
-  credentials:
-    username: ${APP_TEST_USERNAME}
-    password: ${APP_TEST_PASSWORD}
+  method: form          # form | cookie | token | none
+  form:
+    url: /login
+    fields:
+      email: ${AUTH_EMAIL}
+      password: ${AUTH_PASSWORD}
+    submit: button[type="submit"]
+  cookie:
+    name: session_id
+    value: ${SESSION_COOKIE}
+  token:
+    header: Authorization
+    value: "Bearer ${AUTH_TOKEN}"
 
 environments:
   dev:
@@ -53,6 +61,20 @@ integrations:
     enabled: true
     baseUrl: "https://myteam.atlassian.net"
     projectKey: "MYAPP"
+
+exploration:
+  maxPages: 20              # Max pages to explore per session
+  maxDepth: 5               # Max click depth from entry point
+  waitStrategy: "networkIdle+1s"  # Network idle + 1s DOM stability
+
+accessibility:
+  wcagLevel: AA             # A | AA | AAA
+  ignoreRules: []           # axe-core rule IDs to skip
+
+uiVerification:
+  spacingTolerance: 2       # pixels
+  fontSizeTolerance: 1      # pixels
+  colorMatch: exact         # exact | close (close allows ±5 on each RGB channel)
 
 stack:
   language: typescript
